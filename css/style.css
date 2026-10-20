@@ -9,3 +9,11 @@ body{
     min-height: 100vh;
 }
 
+main{
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-login {
+    background-color: #fce8ad;
+}
