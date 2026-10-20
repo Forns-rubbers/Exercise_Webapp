@@ -15,5 +15,14 @@ main{
 }
 
 .right-login {
+    min-height: 100vh;
+    text-align: center;
     background-color: #fce8ad;
+    width: 55%;
+    border-radius: 20% 0 0 20%;
+}
+
+.left-login img {
+    position: relative;
+    top: 20%;
 }
