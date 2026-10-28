@@ -285,6 +285,7 @@ h1 {
 }
 
 .confirm{
+    margin-top: 4rem;
     flex: 1;
     min-width: 0;
 

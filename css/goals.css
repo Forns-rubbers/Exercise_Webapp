@@ -1,0 +1,175 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #ffe9ae;
+    color: #000;
+}
+
+.goal-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 7vh 24px 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.goal-page h1 {
+    font-size: clamp(28px, 4vw, 48px);
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+#goalForm {
+    width: 100%;
+    max-width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.goal-options {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 40px;
+}
+
+.goal-option {
+    min-height: 88px;
+    padding: 14px 20px;
+
+    border: 3px solid #111;
+    border-radius: 100px;
+
+    background-color: transparent;
+    color: #000;
+
+    font-size: clamp(20px, 2.5vw, 36px);
+    font-weight: 600;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* Hover: เมื่อนำเมาส์ไปวาง */
+.goal-option:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Selected: เมื่อเลือกเป้าหมาย */
+.goal-option.selected {
+    background-color: #000;
+    color: #fff;
+}
+
+/* เป้าหมายแถวล่าง */
+.goal-option-featured {
+    width: min(100%, 580px);
+    margin-top: 30px;
+}
+
+.confirm-button {
+    min-width: 250px;
+    min-height: 66px;
+    padding: 12px 35px;
+    margin-top: 32px;
+
+    border: 3px solid #000;
+    border-radius: 100px;
+
+    background-color: #252929;
+    color: #fff;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+    background-color: #000;
+}
+
+.confirm-button:focus-visible,
+.goal-option:focus-visible {
+    outline: 3px solid #555;
+    outline-offset: 4px;
+}
+
+.error-message {
+    min-height: 24px;
+    margin-top: 12px;
+    color: #a00000;
+    font-size: 16px;
+    text-align: center;
+}
+
+.logo {
+    width: 140px;
+    max-width: 35vw;
+    height: auto;
+    object-fit: contain;
+    margin-top: 35px;
+}
+
+/* Tablet และ Mobile */
+@media (max-width: 700px) {
+    .goal-page {
+        padding: 50px 20px 25px;
+    }
+
+    .goal-page h1 {
+        margin-bottom: 35px;
+    }
+
+    .goal-options {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .goal-option {
+        min-height: 65px;
+        font-size: 23px;
+        padding: 12px 16px;
+    }
+
+    .goal-option-featured {
+        margin-top: 16px;
+    }
+
+    .confirm-button {
+        min-height: 56px;
+        min-width: 210px;
+        font-size: 22px;
+        margin-top: 24px;
+    }
+
+    .logo {
+        width: 110px;
+        margin-top: 25px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

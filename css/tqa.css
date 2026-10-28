@@ -1,0 +1,217 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --cream: #ffebaf;
+    --blue: #2862d5;
+    --black: #050505;
+    --white: #ffffff;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--cream);
+    color: var(--black);
+    font-family: "Tahoma", sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(24px, 5vw, 64px) 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 2.7rem);
+    line-height: 1.5;
+    margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+#locationForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.options {
+    width: min(100%, 1080px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 3.5vw, 56px);
+}
+
+.option {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 10%;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.option svg {
+    width: 66%;
+    height: auto;
+    max-height: 55%;
+    overflow: visible;
+}
+
+.option-title {
+    font-size: clamp(1rem, 2.6vw, 2rem);
+    font-weight: 700;
+}
+
+.option-subtitle {
+    font-size: clamp(0.65rem, 1.6vw, 1.35rem);
+    font-weight: 500;
+}
+
+.option.selected {
+    background: var(--blue);
+    border-color: var(--blue);
+}
+
+.option:hover {
+    transform: translateY(-4px);
+}
+
+.option:focus-visible,
+.confirm-button:focus-visible {
+    outline: 4px solid #e05b42;
+    outline-offset: 5px;
+}
+
+.confirm-button {
+    min-width: 230px;
+    margin-top: clamp(28px, 4vw, 42px);
+    padding: 12px 42px;
+    border: 3px solid var(--black);
+    border-radius: 999px;
+    background: #202222;
+    color: var(--white);
+    font-size: clamp(1.1rem, 2vw, 1.65rem);
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+    background: #484949;
+}
+
+.brand {
+    position: relative;
+    margin-top: 34px;
+    display: flex;
+    align-items: center;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -4px;
+    color: #2675cf;
+    line-height: 1;
+}
+
+.brand-icon {
+    color: #ef4545;
+}
+
+.brand-name {
+    color: #367bcb;
+}
+
+.brand small {
+    position: absolute;
+    bottom: -12px;
+    right: 0;
+    font-size: 9px;
+    letter-spacing: 0;
+    color: #333;
+    transform: rotate(-10deg);
+}
+
+@media (min-width: 1400px) {
+    .options {
+        width: min(100%, 1080px);
+    }
+}
+
+@media (max-width: 600px) {
+    .page {
+        justify-content: center;
+        padding: 32px 18px;
+    }
+
+    h1 {
+        max-width: 360px;
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        margin-bottom: 32px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 18px;
+    }
+
+    .option {
+        width: min(72vw, 230px);
+        padding: 24px;
+    }
+
+    .option svg {
+        width: 55%;
+        max-height: 55%;
+    }
+
+    .option-title {
+        font-size: 1.45rem;
+    }
+
+    .option-subtitle {
+        font-size: 1rem;
+    }
+
+    .confirm-button {
+        width: min(100%, 260px);
+        margin-top: 28px;
+    }
+
+    .brand {
+        margin-top: 28px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

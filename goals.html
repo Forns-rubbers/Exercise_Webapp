@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fitz — Exercise Goal</title>
+
+    <link rel="stylesheet" href="css/goals.css">
+    <script src="js/goals.js" defer></script>
+</head>
+
+<body>
+    <main class="goal-page">
+        <h1>เป้าหมายการออกกำลังกาย?</h1>
+
+        <form id="goalForm">
+            <div class="goal-options">
+                <button type="button" class="goal-option"
+                    data-goal="weight_loss">
+                    ลดน้ำหนัก
+                </button>
+
+                <button type="button" class="goal-option"
+                    data-goal="health">
+                    สร้างสุขภาพที่ดี
+                </button>
+
+                <button type="button" class="goal-option"
+                    data-goal="muscle">
+                    สร้างกล้ามเนื้อ
+                </button>
+
+                <button type="button" class="goal-option"
+                    data-goal="performance">
+                    เพิ่มสมรรถภาพร่างกาย
+                </button>
+            </div>
+
+            <button type="button"
+                class="goal-option goal-option-featured"
+                data-goal="consistency">
+                ออกอย่างสม่ำเสมอ
+            </button>
+
+            <p id="errorMessage" class="error-message"
+                role="alert" aria-live="polite"></p>
+
+            <button style="margin-top: 4rem;" type="submit" class="confirm-button">
+                CONFIRM
+            </button>
+        </form>
+
+        <img style="transform: scale(2);"
+            class="logo"
+            src="media/img/bt-logo-login.png"
+            alt="Fitz Daily Exercise"
+        >
+    </main>
+</body>
+</html>
