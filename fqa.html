@@ -1,0 +1,78 @@
+
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitz — Daily Exercise</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/fqa.css">
+
+  
+</head>
+
+<body>
+  <main class="screen" aria-labelledby="question">
+    <section class="survey" aria-label="Exercise frequency">
+      <h1 id="question">ปกติคุณออกกำลังกายบ่อยแค่ไหน?</h1>
+
+      <form class="choices">
+        <label class="choice selected">
+          <input type="radio" name="frequency" value="0" checked>
+          <span class="radio"></span>
+          <span>ไม่ออกเลย</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="frequency" value="1">
+          <span class="radio"></span>
+          <span>1 วัน / สัปดาห์</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="frequency" value="2">
+          <span class="radio"></span>
+          <span>2 วัน / สัปดาห์</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="frequency" value="3">
+          <span class="radio"></span>
+          <span>3 วัน / สัปดาห์</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="frequency" value="5">
+          <span class="radio"></span>
+          <span>5 วัน / สัปดาห์</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="frequency" value="7">
+          <span class="radio"></span>
+          <span>7 วัน / สัปดาห์</span>
+        </label>
+      </form>
+    </section>
+
+    <div class="brand" aria-label="Fitz Daily Exercise">
+      <span class="leaf leaf-one"></span>
+      <span class="leaf leaf-two"></span>
+      <span class="f">F</span>
+      <span class="i">i</span>
+      <span class="t">t</span>
+      <span class="z">z</span>
+      <i>Daily Exercise</i>
+    </div>
+
+    <button id="confirm" class="confirm" type="button">
+        CONFIRM
+    </button>
+  </main>
+
+  <script src="js/fqa.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitz — Exercise Frequency</title>
+
+    <link rel="stylesheet" href="css/sqa.css">
+</head>
+<body>
+
+    <main class="frequency-page">
+
+        <h1>คุณออกกำลังกายมานานแค่ไหนแล้ว?</h1>
+
+        <section class="frequency-control">
+            <p class="number" id="dayNumber">0</p>
+
+            <input
+                type="range"
+                id="daySlider"
+                min="0"
+                max="30"
+                value="0"
+                step="1"
+                aria-label="เลือกจำนวนวันออกกำลังกายต่อสัปดาห์"
+            >
+
+            <p class="day-label" id="dayLabel">DAY</p>
+
+            <button id="confirmBtn" type="button">
+                CONFIRM
+            </button>
+
+            <img
+                class="logo"
+                src="media/img/bt-logo-login.png"
+                alt="Fitz Daily Exercise"
+            >
+        </section>
+
+    </main>
+
+    <script src="js/sqa.js"></script>
+</body>
+</html>

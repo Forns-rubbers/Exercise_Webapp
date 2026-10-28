@@ -78,8 +78,22 @@ confirmBtn.addEventListener("click", function () {
         JSON.stringify(selectedCharacter)
     );
 
-    alert("You selected " + selectedCharacter.name + "!");
 });
+
+
+confirmBtn.addEventListener("click", function () {
+    const selectedCharacter = characters[currentIndex];
+
+    // บันทึกตัวละครที่เลือก
+    localStorage.setItem(
+        "selectedCharacter",
+        JSON.stringify(selectedCharacter)
+    );
+
+    // ไปหน้าถัดไป
+    window.location.href = "fqa.html";
+});
+
 
 // แสดงตัวละครเมื่อเปิดหน้าเว็บ
 showCharacter();
