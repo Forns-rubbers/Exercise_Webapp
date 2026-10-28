@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main>
+        <div class="left-login">
+            <img src="media/img/charactor-login.png" alt="">
+        </div>
+        <div class="right-login">
+            <div class="login-logo">
+                <img src="media/img/logo-login.png" alt="">
+            </div>
+            <form id="register-form">
+                <div class="email-blog">
+                    <input id="username" name="username" type="text" placeholder="USERNAME : " minlength="3" maxlength="30" required> <br><br>
+                </div>
+                <div class="email-blog">
+                    <input id="email" name="email" type="email" placeholder="EMAIL : " required> <br><br>
+                </div>
+                <div class="password-blog">
+                    <input id="password" name="password" type="password" placeholder="PASSWORD (8+) : " minlength="8" required><br>
+                </div>
+                <p id="msg" class="msg"></p>
+                <button type="submit">REGISTER</button>
+                <a class="register-link" href="index.html">BACK TO LOGIN</a>
+            </form>
+            <div class="buttom-logo">
+                <img src="media/img/bt-logo-login.png" alt="">
+            </div>
+        </div>
+    </main>
+    <script src="js/register.js"></script>
+</body>
+</html>
