@@ -1,0 +1,340 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #ffebb0;
+    --ink: #171713;
+    --accent: #f5d96c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Kanit', sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+.goal-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.page-title {
+    width: 90%;
+    margin: 0 0 18px;
+    text-align: center;
+    font-size: clamp(17px, 2.1vw, 30px);
+    font-weight: 600;
+}
+
+/* Goal illustration */
+
+.goal-button {
+    width: min(380px, 65vw);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.goal-net {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.48;
+    border: 12px solid var(--ink);
+    border-radius: 16px 16px 5px 5px;
+    background-color: rgba(255, 255, 255, 0.12);
+    display: grid;
+    place-items: center;
+    clip-path: polygon(
+        3% 0, 97% 0, 100% 100%,
+        80% 89%, 20% 89%, 0 100%
+    );
+}
+
+.goal-net::before {
+    content: "";
+    position: absolute;
+    inset: 8% 6% 13%;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 23px,
+            rgba(23, 23, 19, 0.55) 24px 25px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 28px,
+            rgba(23, 23, 19, 0.55) 29px 30px
+        );
+    pointer-events: none;
+}
+
+.goal-net span {
+    z-index: 1;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.goal-arrows {
+    height: 82px;
+    margin-top: -2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.5;
+}
+
+.goal-arrows span {
+    font-family: Arial, sans-serif;
+    font-size: 65px;
+    font-weight: 900;
+    transform: scaleX(1.1);
+}
+
+/* Carousel */
+
+.character-section {
+    width: 100%;
+    margin-top: 14px;
+}
+
+.character-carousel {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 16px calc(50% - 78px) 26px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+}
+
+.character-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.character-card {
+    flex: 0 0 156px;
+    min-width: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    opacity: 0.76;
+    transform: scale(0.70);
+    transform-origin: center center;
+    transition:
+        transform 250ms ease,
+        opacity 250ms ease;
+    scroll-snap-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.character-card img {
+    display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.day-label {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: font-size 250ms ease;
+}
+
+.character-card.active {
+    opacity: 1;
+    transform: scale(1.12);
+    z-index: 2;
+}
+
+.character-card.active .day-label {
+    font-size: 30px;
+}
+
+.character-card:focus-visible,
+.goal-button:focus-visible {
+    outline: 3px dashed var(--ink);
+    outline-offset: 5px;
+}
+
+.selection-hint {
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.status-message {
+    min-height: 24px;
+    margin: 8px 0 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+    .goal-page {
+        padding-top: 24px;
+    }
+
+    .goal-button {
+        width: min(310px, 68vw);
+    }
+
+    .goal-net {
+        border-width: 9px;
+    }
+
+    .goal-arrows {
+        height: 60px;
+    }
+
+    .goal-arrows span {
+        font-size: 48px;
+    }
+
+    .character-carousel {
+        gap: 4px;
+        padding-left: calc(50% - 64px);
+        padding-right: calc(50% - 64px);
+    }
+
+    .character-card {
+        flex-basis: 128px;
+    }
+
+    .character-card img {
+        height: 125px;
+    }
+
+    .day-label {
+        font-size: 18px;
+    }
+
+    .character-card.active .day-label {
+        font-size: 25px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    .goal-page {
+        padding-top: 28px;
+    }
+
+    .page-title {
+        width: 92%;
+        margin-bottom: 20px;
+        font-size: 17px;
+    }
+
+    .goal-button {
+        width: min(270px, 72vw);
+    }
+
+    .goal-net {
+        border-width: 8px;
+    }
+
+    .goal-net span {
+        font-size: 40px;
+    }
+
+    .goal-arrows {
+        height: 50px;
+    }
+
+    .goal-arrows span {
+        font-size: 42px;
+    }
+
+    .character-section {
+        margin-top: 12px;
+    }
+
+    .character-carousel {
+        gap: 0;
+        padding-top: 16px;
+        padding-bottom: 22px;
+        padding-left: calc(50% - 56px);
+        padding-right: calc(50% - 56px);
+    }
+
+    .character-card {
+        flex-basis: 112px;
+        gap: 6px;
+    }
+
+    .character-card img {
+        height: 105px;
+    }
+
+    .character-card.active {
+        transform: scale(1.08);
+    }
+
+    .day-label {
+        font-size: 16px;
+    }
+
+    .character-card.active .day-label {
+        font-size: 21px;
+    }
+
+    .selection-hint {
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

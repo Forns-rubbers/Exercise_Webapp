@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fitz — Choose Your Goal</title>
+
+    <link rel="stylesheet" href="css/fgoal.css">
+    <script src="js/fgoal.js" defer></script>
+</head>
+<body>
+
+    <main class="goal-page">
+
+        <h1 class="page-title">
+            ตั้งเป้าหมายการออกกำลังกายของคุณต่อสัปดาห์
+        </h1>
+
+        <!-- Goal illustration -->
+        <button class="goal-button" id="confirmGoal"
+                type="button" aria-label="ยืนยันเป้าหมาย">
+            <div class="goal-net">
+                <span>GOAL</span>
+            </div>
+
+            <div class="goal-arrows" aria-hidden="true">
+                <span>⌃</span>
+                <span>⌃</span>
+                <span>⌃</span>
+            </div>
+        </button>
+
+        <!-- Character carousel -->
+        <section class="character-section"
+                 aria-label="เลือกจำนวนวันออกกำลังกาย">
+
+            <div class="character-carousel" id="characterCarousel">
+
+                <button class="character-card"
+                        type="button" data-days="3">
+                    <img src="media/img/vegetable.png"
+                         alt="Broccoli character">
+                    <span class="day-label">3 DAY</span>
+                </button>
+
+                <button class="character-card"
+                        type="button" data-days="4">
+                    <img src="media/img/watermelon.png"
+                         alt="Watermelon character">
+                    <span class="day-label">4 DAY</span>
+                </button>
+
+                <button class="character-card"
+                        type="button" data-days="5">
+                    <img src="media/img/blue.png"
+                         alt="Blueberry character">
+                    <span class="day-label">5 DAY</span>
+                </button>
+
+                <button class="character-card active"
+                        type="button" data-days="6">
+                    <img src="media/img/avocado.png"
+                         alt="Avocado character">
+                    <span class="day-label">6 DAY</span>
+                </button>
+
+                <button class="character-card"
+                        type="button" data-days="7">
+                    <img src="media/img/banana.png"
+                         alt="Banana character">
+                    <span class="day-label">7 DAY</span>
+                </button>
+
+                <button class="character-card"
+                        type="button" data-days="1">
+                    <img src="media/img/tomato.png"
+                         alt="Tomato character">
+                    <span class="day-label">1 DAY</span>
+                </button>
+
+                <button class="character-card"
+                        type="button" data-days="2">
+                    <img src="media/img/cheese.png"
+                         alt="Taco character">
+                    <span class="day-label">2 DAY</span>
+                </button>
+
+            </div>
+
+        </section>
+
+        <p class="selection-hint">
+            เลื่อนเพื่อเลือกเป้าหมายของคุณ
+        </p>
+
+        <p class="status-message" id="statusMessage"
+           role="status" aria-live="polite"></p>
+
+    </main>
+
+</body>
+</html>

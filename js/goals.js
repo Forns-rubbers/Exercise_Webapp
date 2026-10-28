@@ -47,7 +47,7 @@ form.addEventListener("submit", (event) => {
 
         if (savedGoal === selectedGoal) {
             // 4. บันทึกสำเร็จแล้ว ไปหน้าถัดไป
-            window.location.href = "sgoal.html";
+            window.location.href = "fgoal.html";
         } else {
             errorMessage.textContent =
                 "บันทึกข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง";
