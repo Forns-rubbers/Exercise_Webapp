@@ -7,11 +7,25 @@
 body{
     background-color: #2361d6;
     min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
 }
 
 main{
     display: flex;
     justify-content: space-between;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.left-login {
+    width: 45%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
 }
 
 .right-login {
@@ -20,11 +34,29 @@ main{
     background-color: #fce8ad;
     width: 55%;
     border-radius: 20% 0 0 20%;
+    padding: clamp(32px, 6vw, 90px) 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .left-login img {
-    position: relative;
-    top: 20%;
+    width: min(100%, 520px);
+    height: auto;
+    object-fit: contain;
+}
+
+.login-logo img,
+.buttom-logo img {
+    display: block;
+    width: min(260px, 55vw);
+    height: auto;
+    margin: 0 auto;
+}
+
+.login-logo {
+    margin-bottom: clamp(24px, 4vw, 48px);
 }
 
 input {
@@ -32,13 +64,15 @@ input {
     background-color: #fce8ad;
     padding: 1rem;
     border-radius: 50px;
-    height: 100px;
-    width: 500px;
-    font-size: 1.5rem;
+    height: clamp(64px, 7vw, 100px);
+    width: min(500px, 100%);
+    font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
+.email-blog,
+.password-blog { width: min(500px, 100%); }
+
 .password-blog{
-    width: 500px;
     margin: 0 auto;
     
 }
@@ -60,9 +94,9 @@ button {
     background-color: black;
     border-radius: 50px;
     padding: 1rem;
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 3vw, 2rem);
     color: white;
-    width: 500px;
+    width: min(500px, 100%);
     border: 1px solid black;
     font-width: bold;
 }
@@ -78,4 +112,52 @@ button {
     margin-top: 1rem;
     color: #000;
     font-weight: bold;
+}
+
+.secondary-button {
+    width: auto;
+    height: auto;
+    margin-top: 0;
+    padding: .65rem 1.25rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 760px) {
+    main {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .left-login {
+        width: 100%;
+        min-height: 27svh;
+        padding: 20px 32px;
+    }
+
+    .left-login img {
+        width: min(250px, 60vw);
+        max-height: 24svh;
+    }
+
+    .right-login {
+        width: 100%;
+        min-height: 73svh;
+        border-radius: 72px 72px 0 0;
+        padding: 42px 20px 32px;
+    }
+
+    .login-logo { margin-bottom: 28px; }
+    .login-logo img { width: min(210px, 52vw); }
+    input { height: 62px; padding: .8rem 1rem; }
+    button { min-height: 58px; margin-top: 1.75rem; }
+    .password-blog a p { font-size: 13px; }
+    .buttom-logo { margin-top: 24px; }
+    .buttom-logo img { width: min(150px, 38vw); }
+}
+
+@media (max-width: 380px) {
+    .right-login { border-radius: 52px 52px 0 0; padding-inline: 14px; }
+    .left-login { min-height: 23svh; }
+    .right-login { min-height: 77svh; }
+    input { font-size: .95rem; }
 }

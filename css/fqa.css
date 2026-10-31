@@ -314,3 +314,31 @@ h1 {
     transform: scale(0.97);
 
 }
+
+.logo {
+    width: min(160px, 38vw);
+    height: auto;
+    margin-top: 28px;
+}
+
+@media (max-width: 700px) {
+    .choice:nth-child(3) {
+        display: flex;
+    }
+
+    .screen {
+        min-height: 100dvh;
+        padding: 44px 20px 42px;
+        overflow: auto;
+    }
+
+    h1 { margin-bottom: 42px; }
+    .choices { row-gap: 18px; }
+    .confirm { width: min(100%, 320px); margin-top: 2.25rem; }
+}
+
+@media (max-width: 410px) {
+    h1 { font-size: clamp(28px, 8vw, 34px); }
+    .choice { font-size: clamp(22px, 6vw, 27px); gap: 22px; }
+    .radio { width: 58px; height: 58px; }
+}

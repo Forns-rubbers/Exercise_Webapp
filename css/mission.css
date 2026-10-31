@@ -10,3 +10,17 @@ header button { border: 2px solid #171713; border-radius: 999px; padding: 9px 18
 .level[disabled] { opacity: .45; cursor: not-allowed; }
 .level.completed { background: #bdeab9; }
 #message { color: #a00000; min-height: 24px; }
+
+@media (max-width: 520px) {
+  .mission-page { padding: 24px 16px; }
+  header { align-items: flex-start; }
+  header button { padding: 8px 12px; font-size: .9rem; white-space: nowrap; }
+  .levels { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+  .level { min-height: 112px; border-radius: 18px; font-size: 18px; }
+}
+
+@media (max-width: 340px) {
+  header { flex-direction: column; }
+  header button { width: 100%; }
+  .levels { grid-template-columns: 1fr; }
+}
