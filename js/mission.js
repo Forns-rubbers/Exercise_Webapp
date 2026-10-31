@@ -1,85 +1,75 @@
-import { requireUser, signOut } from "./auth.js";
-import { supabase } from "./supabase.js";
-
-const TOTAL_LEVELS = 30;
-const tasks = [
-  "เดินออกกำลังกายอย่างน้อย 20 นาที", "เล่นกีฬาอะไรก็ได้กับเพื่อนอย่างน้อย 30 นาที", "ยืดเหยียดร่างกาย 10 นาที",
-  "วิ่งหรือปั่นจักรยานอย่างน้อย 20 นาที", "ทำท่าออกกำลังกายที่ชอบ 15 นาที", "เดินขึ้นบันไดแทนลิฟต์ 10 นาที"
-];
-const map = document.getElementById("mission-map");
-const dialog = document.getElementById("mission-dialog");
-const uploadScreen = document.getElementById("upload-screen");
-const evidence = document.getElementById("evidence");
-const preview = document.getElementById("preview");
-const submit = document.getElementById("submit-evidence");
-const uploadMessage = document.getElementById("upload-message");
-let user, progress, selectedLevel, selectedFile;
-
-const taskFor = (level) => tasks[(level - 1) % tasks.length];
-function showDialog(level) {
-  selectedLevel = level;
-  document.getElementById("dialog-number").textContent = String(level).padStart(2, "0");
-  document.getElementById("dialog-title").textContent = `MISSION ${String(level).padStart(2, "0")}`;
-  document.getElementById("dialog-task").textContent = `ภารกิจ : ${taskFor(level)}`;
-  dialog.showModal();
+const M=[
+["TU Native","เดินออกกำลังกายอย่างน้อย 20 นาที","👣"],["Morning Stretch","ยืดเหยียดร่างกายอย่างน้อย 10 นาที","🧘"],
+["Team Player","เล่นกีฬาอะไรก็ได้กับเพื่อน อย่างน้อย 30 นาที","⚽"],["Stair Master","เดินขึ้นบันไดแทนลิฟต์ อย่างน้อย 5 ชั้น","🪜"],
+["Jump Start","กระโดดเชือกอย่างน้อย 5 นาที","🪢"],["Push It","วิดพื้นสะสมอย่างน้อย 20 ครั้ง","💪"],
+["Cardio Day","วิ่งเหยาะๆ อย่างน้อย 15 นาที","🏃"],["Plank Time","แพลงก์รวมอย่างน้อย 3 นาที","🧱"],
+["Bike Ride","ปั่นจักรยานอย่างน้อย 30 นาที","🚴"],["Squat Up","สควอทอย่างน้อย 30 ครั้ง","🦵"],
+["Dance Party","เต้นออกกำลังกายอย่างน้อย 15 นาที","💃"],["Swim Fun","ว่ายน้ำอย่างน้อย 20 นาที","🏊"],
+["Core Power","ทำท่าซิทอัพอย่างน้อย 30 ครั้ง","🔥"],["Park Walk","เดินเล่นที่สวนสาธารณะ 30 นาที","🌳"],
+["Yoga Flow","เล่นโยคะอย่างน้อย 20 นาที","🧘"],["Badminton","เล่นแบดมินตันกับเพื่อน 30 นาที","🏸"],
+["Run 3K","วิ่งให้ครบ 3 กิโลเมตร","🏅"],["Lunge Walk","ทำท่า Lunge อย่างน้อย 20 ครั้ง","🚶"],
+["Hydrate","ดื่มน้ำให้ครบ 8 แก้ว พร้อมออกกำลังกาย 10 นาที","💧"],["Basketball","เล่นบาสเกตบอลอย่างน้อย 30 นาที","🏀"],
+["Burpee Boss","เบอร์พีอย่างน้อย 15 ครั้ง","⚡"],["Night Walk","เดินตอนเย็นอย่างน้อย 30 นาที","🌙"],
+["Football","เตะฟุตบอลกับเพื่อนอย่างน้อย 30 นาที","⚽"],["HIIT","ออกกำลังกายแบบ HIIT อย่างน้อย 15 นาที","🔥"],
+["Table Tennis","เล่นปิงปองอย่างน้อย 30 นาที","🏓"],["Hill Climb","เดินขึ้นเนินหรือสะพานลอย 10 นาที","⛰️"],
+["Volleyball","เล่นวอลเลย์บอลอย่างน้อย 30 นาที","🏐"],["Run 5K","วิ่งให้ครบ 5 กิโลเมตร","🏆"],
+["Active Friends","ชวนเพื่อนออกกำลังกายด้วยกัน 45 นาที","🤝"],["Champion","ออกกำลังกายต่อเนื่องอย่างน้อย 60 นาที","👑"]];
+const N=M.length;
+let cur=1,sel=0,fileUrl=null;
+try{cur=Math.min(N,parseInt(localStorage.getItem('fitzCur'))||1)}catch(e){}
+const $=id=>document.getElementById(id);
+$('pattern').textContent=("🥑🍌🍅🍉🥦🍕⭐").repeat(400);
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',1800)}
+function pos(i,W){const j=[0,.01,.02,-.01,.015][i%5];return{x:W*(i%2===0?.24+j:.73+j),y:110+i*118}}
+function draw(){
+  const map=$('map'),W=map.clientWidth,H=110+N*118+40;
+  map.style.height=H+'px';
+  const svg=$('lines');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.height=H+'px';
+  let s='';
+  for(let i=0;i<N-1;i++){const a=pos(i,W),b=pos(i+1,W);
+    s+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${i+1<cur?'#13a557':'#ff9300'}" stroke-width="22" stroke-linecap="round"/>`}
+  svg.innerHTML=s;
+  map.querySelectorAll('.node').forEach(n=>n.remove());
+  for(let i=0;i<N;i++){const p=pos(i,W),n=i+1,b=document.createElement('button');
+    b.className='node'+(n<=cur?' cur':'')+(n>cur?' lock':'');
+    if(n<cur){b.classList.remove('cur');b.style.cssText+=';border-color:#13a557;background:radial-gradient(circle at 35% 30%,#7dffb0,#21e87c);color:#0e9f4f'}
+    b.style.left=p.x+'px';b.style.top=p.y+'px';b.textContent=n;
+    b.onclick=()=>openCard(n);$('map').appendChild(b)}
 }
-function render(submitted = new Set()) {
-  map.replaceChildren();
-  for (let level = 1; level <= TOTAL_LEVELS; level += 1) {
-    const node = document.createElement("button");
-    node.className = "mission-node";
-    node.style.setProperty("--x", level % 2 ? "25%" : "75%");
-    node.style.setProperty("--y", `${30 + (level - 1) * 158}px`);
-    node.textContent = level;
-    const completed = level <= progress.completed_level;
-    const unlocked = level <= progress.unlocked_level;
-    if (completed) node.classList.add("completed");
-    if (level === progress.unlocked_level) node.classList.add("current");
-    if (submitted.has(level)) node.classList.add("submitted");
-    if (!unlocked || submitted.has(level)) { node.classList.add("locked"); node.disabled = true; }
-    if (unlocked && !submitted.has(level)) node.addEventListener("click", () => showDialog(level));
-    map.appendChild(node);
-  }
+function openCard(n){
+  if(n>cur){toast('🔒 ต้องผ่านด่าน '+(n-1)+' ก่อน');return}
+  sel=n;const m=M[n-1];
+  $('card').innerHTML=`<div class="top"><span class="no">${String(n).padStart(2,'0')}</span><span class="ic">${m[2]}</span><span style="width:42px"></span></div>
+  <div class="in"><h2>${m[0]}</h2><p>ภารกิจ : ${m[1]}</p><button class="btn go" id="start">เริ่ม</button></div>`;
+  $('modalBg').classList.add('show');
+  $('start').onclick=startMission;
 }
-async function load() {
-  const [{ data: profile }, { data: mission, error }, { data: submissions }] = await Promise.all([
-    supabase.from("profiles").select("username").eq("id", user.id).maybeSingle(),
-    supabase.from("mission_progress").select("unlocked_level, completed_level").eq("user_id", user.id).single(),
-    supabase.from("mission_submissions").select("level").eq("user_id", user.id).eq("status", "pending"),
-  ]);
-  if (error) { document.getElementById("journey-status").textContent = "ยังไม่ได้ตั้งค่าฐานข้อมูล Mission"; return; }
-  progress = mission;
-  document.getElementById("username").textContent = profile?.username?.toUpperCase() || "USERNAME";
-  document.getElementById("userId").textContent = `ID : ${user.id.slice(0, 6).toUpperCase()}`;
-  document.getElementById("journey-status").textContent = `ปลดล็อกถึงด่าน ${progress.unlocked_level} / ${TOTAL_LEVELS}`;
-  render(new Set((submissions || []).map((item) => item.level)));
+$('modalBg').onclick=e=>{if(e.target.id==='modalBg')$('modalBg').classList.remove('show')};
+function resetUp(){
+  fileUrl&&URL.revokeObjectURL(fileUrl);fileUrl=null;$('file').value='';
+  $('drop').innerHTML='<div class="plus">+</div><div>เพิ่มรูปภาพ/คลิปวิดิโอ</div>';
+  $('send').disabled=true;$('send').textContent='ส่งหลักฐานเพื่อตรวจสอบ';
 }
-document.getElementById("logout").addEventListener("click", signOut);
-document.getElementById("home").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-document.getElementById("close-dialog").addEventListener("click", () => dialog.close());
-document.getElementById("start-mission").addEventListener("click", () => {
-  dialog.close(); uploadScreen.hidden = false; document.body.style.overflow = "hidden";
-  document.getElementById("upload-task").textContent = `ภารกิจ : ${taskFor(selectedLevel)}`;
-});
-document.getElementById("back-to-map").addEventListener("click", () => { uploadScreen.hidden = true; document.body.style.overflow = ""; });
-evidence.addEventListener("change", () => {
-  selectedFile = evidence.files?.[0]; preview.replaceChildren(); uploadMessage.textContent = ""; submit.disabled = !selectedFile;
-  if (!selectedFile) { preview.hidden = true; return; }
-  const media = document.createElement(selectedFile.type.startsWith("video/") ? "video" : "img");
-  media.src = URL.createObjectURL(selectedFile); if (media.tagName === "VIDEO") media.controls = true;
-  preview.appendChild(media); preview.hidden = false;
-});
-submit.addEventListener("click", async () => {
-  if (!selectedFile || !selectedLevel) return;
-  submit.disabled = true; uploadMessage.textContent = "กำลังส่งหลักฐาน…";
-  const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const evidence_path = `${user.id}/${selectedLevel}/${Date.now()}-${safeName}`;
-  const { error: uploadError } = await supabase.storage.from("mission-evidence").upload(evidence_path, selectedFile, { contentType: selectedFile.type, upsert: false });
-  if (uploadError) { uploadMessage.textContent = `ส่งไฟล์ไม่สำเร็จ: ${uploadError.message}`; submit.disabled = false; return; }
-  const { error: recordError } = await supabase.from("mission_submissions").insert({ user_id: user.id, level: selectedLevel, evidence_path });
-  if (recordError) { uploadMessage.textContent = `บันทึกหลักฐานไม่สำเร็จ: ${recordError.message}`; submit.disabled = false; return; }
-  uploadMessage.textContent = "ส่งหลักฐานแล้ว กำลังรอการตรวจสอบ";
-  setTimeout(async () => { uploadScreen.hidden = true; document.body.style.overflow = ""; await load(); }, 1300);
-});
-user = await requireUser();
-if (user) load();
+function startMission(){
+  $('modalBg').classList.remove('show');resetUp();
+  $('umission').innerHTML='ภารกิจ : '+M[sel-1][1].replace(/ อย่างน้อย/,'<br>อย่างน้อย');
+  $('up').classList.add('show');
+}
+$('back').onclick=()=>$('up').classList.remove('show');
+$('drop').onclick=()=>$('file').click();
+$('file').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  fileUrl&&URL.revokeObjectURL(fileUrl);fileUrl=URL.createObjectURL(f);
+  $('drop').innerHTML=f.type.startsWith('video')?`<video src="${fileUrl}" controls playsinline></video>`:`<img src="${fileUrl}" alt="หลักฐาน">`;
+  $('send').disabled=false;
+};
+$('send').onclick=()=>{
+  $('send').disabled=true;$('send').textContent='กำลังส่ง...';
+  setTimeout(()=>{
+    if(sel===cur&&cur<N){cur++;try{localStorage.setItem('fitzCur',cur)}catch(e){}}
+    $('up').classList.remove('show');draw();toast('✅ ส่งหลักฐานแล้ว รอการตรวจสอบ');
+    const y=pos(Math.min(cur,N)-1,$('map').clientWidth).y;$('scroll').scrollTo({top:y-200,behavior:'smooth'});
+  },900);
+};
+addEventListener('resize',draw);draw();
+$('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);
