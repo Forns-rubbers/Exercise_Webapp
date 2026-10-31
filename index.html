@@ -15,7 +15,7 @@
             <div class="login-logo">
                 <img src="media/img/logo-login.png" alt="">
             </div>
-            <form action="" method="post">
+            <form id="login-form">
                 <div class="email-blog">
                     <input id="email" name="email" type="email" placeholder="USERNAME : " required> <br><br>
                 </div>
@@ -27,13 +27,15 @@
                         </p>
                     </a>
                 </div>
+                <button type="submit">LOGIN</button>
             </form>
-            <button onclick="">LOGIN</button>
+            <p id="message" class="auth-message" role="alert"></p>
+            <a class="register-link" href="register.html">CREATE AN ACCOUNT</a>
             <div class="buttom-logo">
                 <img src="media/img/bt-logo-login.png" alt="">
             </div>
         </div>
     </main>
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

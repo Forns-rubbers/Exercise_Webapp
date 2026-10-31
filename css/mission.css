@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&display=swap');
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: #ffebb0; color: #171713; font-family: Kanit, sans-serif; }
+.mission-page { max-width: 850px; margin: auto; padding: 32px 20px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+h1 { margin: 0; font-size: clamp(34px, 7vw, 56px); }
+header button { border: 2px solid #171713; border-radius: 999px; padding: 9px 18px; background: transparent; font: inherit; cursor: pointer; }
+.levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 16px; margin-top: 28px; }
+.level { min-height: 135px; border: 3px solid #171713; border-radius: 22px; background: #fff6d9; font: inherit; font-size: 21px; font-weight: 800; cursor: pointer; }
+.level[disabled] { opacity: .45; cursor: not-allowed; }
+.level.completed { background: #bdeab9; }
+#message { color: #a00000; min-height: 24px; }

@@ -1,99 +1,22 @@
+import { requireUser, updateMyProfile } from "./auth.js";
 
 const characters = [
-    {
-        name: "Tomato",
-        image: "media/img/tomato.png"
-    },
-    {
-        name: "Cheese",
-        image: "media/img/cheese.png"
-    },
-    {
-        name: "vegetavle",
-        image: "media/img/vegetable.png"
-    },
-    {
-        name: "watermelon",
-        image:"media/img/vegetable.png"
-    },
-    {
-        name: "Blue",
-        image: "media/img/blue.png"
-    },
-    {
-        name: "Avocado",
-        image: "media/img/avocado.png"
-    }, 
-    {
-        name: "Banana",
-        image: "media/img/banana.png"
-    }
+  { name: "Tomato", image: "media/img/tomato.png" }, { name: "Cheese", image: "media/img/cheese.png" },
+  { name: "Vegetable", image: "media/img/vegetable.png" }, { name: "Watermelon", image: "media/img/watermelon.png" },
+  { name: "Blue", image: "media/img/blue.png" }, { name: "Avocado", image: "media/img/avocado.png" },
+  { name: "Banana", image: "media/img/banana.png" },
 ];
-
-// ตำแหน่งตัวละครปัจจุบัน
+await requireUser();
 let currentIndex = 0;
-
-// เชื่อม JavaScript กับ HTML
-const characterImage = document.getElementById("characterImage");
-const prebtn = document.getElementById("prebtn");
-const nextbtn = document.getElementById("nextbtn");
-const confirmBtn = document.getElementById("confirm");
-
-// แสดงตัวละครที่เลือกอยู่
-function showCharacter() {
-    const character = characters[currentIndex];
-
-    characterImage.src = character.image;
-    characterImage.alt = character.name;
-}
-
-// กดปุ่มย้อนกลับ
-prebtn.addEventListener("click", function () {
-    currentIndex--;
-
-    if (currentIndex < 0) {
-        currentIndex = characters.length - 1;
-    }
-
-    showCharacter();
+const image = document.getElementById("characterImage");
+const confirm = document.getElementById("confirm");
+const show = () => { image.src = characters[currentIndex].image; image.alt = characters[currentIndex].name; };
+document.getElementById("prebtn").addEventListener("click", () => { currentIndex = (currentIndex - 1 + characters.length) % characters.length; show(); });
+document.getElementById("nextbtn").addEventListener("click", () => { currentIndex = (currentIndex + 1) % characters.length; show(); });
+confirm.addEventListener("click", async () => {
+  confirm.disabled = true;
+  const { error } = await updateMyProfile({ selected_character: characters[currentIndex].name });
+  if (error) { alert(`บันทึกตัวละครไม่สำเร็จ: ${error.message}`); confirm.disabled = false; return; }
+  window.location.href = "fqa.html";
 });
-
-// กดปุ่มถัดไป
-nextbtn.addEventListener("click", function () {
-    currentIndex++;
-
-    if (currentIndex >= characters.length) {
-        currentIndex = 0;
-    }
-
-    showCharacter();
-});
-
-// กดปุ่มยืนยัน
-confirmBtn.addEventListener("click", function () {
-    const selectedCharacter = characters[currentIndex];
-
-    localStorage.setItem(
-        "selectedCharacter",
-        JSON.stringify(selectedCharacter)
-    );
-
-});
-
-
-confirmBtn.addEventListener("click", function () {
-    const selectedCharacter = characters[currentIndex];
-
-    // บันทึกตัวละครที่เลือก
-    localStorage.setItem(
-        "selectedCharacter",
-        JSON.stringify(selectedCharacter)
-    );
-
-    // ไปหน้าถัดไป
-    window.location.href = "fqa.html";
-});
-
-
-// แสดงตัวละครเมื่อเปิดหน้าเว็บ
-showCharacter();
+show();

@@ -66,3 +66,16 @@ button {
     border: 1px solid black;
     font-width: bold;
 }
+
+.auth-message {
+    min-height: 1.5rem;
+    margin: 1rem auto 0;
+    color: #a00000;
+}
+
+.register-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #000;
+    font-weight: bold;
+}

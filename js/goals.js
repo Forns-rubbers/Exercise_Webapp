@@ -1,66 +1,19 @@
-
+import { requireUser, updateMyProfile } from "./auth.js";
+await requireUser();
 const options = document.querySelectorAll(".goal-option");
 const form = document.getElementById("goalForm");
 const errorMessage = document.getElementById("errorMessage");
-
-let selectedGoal = null;
-
-// เลือกเป้าหมาย
-options.forEach((option) => {
-    option.addEventListener("click", () => {
-        // ล้างสถานะ selected ของทุกปุ่ม
-        options.forEach((item) => {
-            item.classList.remove("selected");
-            item.setAttribute("aria-pressed", "false");
-        });
-
-        // กำหนดปุ่มที่คลิกให้เป็น selected
-        option.classList.add("selected");
-        option.setAttribute("aria-pressed", "true");
-
-        // เก็บรหัสเป้าหมายที่เลือก
-        selectedGoal = option.dataset.goal;
-
-        // ล้างข้อความแจ้งเตือน
-        errorMessage.textContent = "";
-    });
+let fitness_goal = null;
+options.forEach((option) => option.addEventListener("click", () => {
+  options.forEach((item) => { item.classList.remove("selected"); item.setAttribute("aria-pressed", "false"); });
+  option.classList.add("selected"); option.setAttribute("aria-pressed", "true"); fitness_goal = option.dataset.goal; errorMessage.textContent = "";
+}));
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!fitness_goal) { errorMessage.textContent = "กรุณาเลือกเป้าหมายการออกกำลังกายก่อน"; return; }
+  const submit = form.querySelector("button[type='submit']"); submit.disabled = true;
+  const { error } = await updateMyProfile({ fitness_goal });
+  if (error) { errorMessage.textContent = `บันทึกข้อมูลไม่สำเร็จ: ${error.message}`; submit.disabled = false; return; }
+  window.location.href = "fgoal.html";
 });
-
-// กด CONFIRM
-
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    // 1. ตรวจสอบว่าผู้ใช้เลือกเป้าหมายหรือยัง
-    if (!selectedGoal) {
-        errorMessage.textContent =
-            "กรุณาเลือกเป้าหมายการออกกำลังกายก่อน";
-        return;
-    }
-
-    try {
-        // 2. บันทึกเป้าหมายลง localStorage
-        localStorage.setItem("fitnessGoal", selectedGoal);
-
-        // 3. ตรวจสอบว่าบันทึกข้อมูลสำเร็จ
-        const savedGoal = localStorage.getItem("fitnessGoal");
-
-        if (savedGoal === selectedGoal) {
-            // 4. บันทึกสำเร็จแล้ว ไปหน้าถัดไป
-            window.location.href = "fgoal.html";
-        } else {
-            errorMessage.textContent =
-                "บันทึกข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง";
-        }
-
-    } catch (error) {
-        errorMessage.textContent =
-            "ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้ง";
-    }
-});
-
-
-// ตั้งค่าเริ่มต้นให้ทุกปุ่ม
-options.forEach((option) => {
-    option.setAttribute("aria-pressed", "false");
-});
+options.forEach((option) => option.setAttribute("aria-pressed", "false"));
