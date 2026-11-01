@@ -15,6 +15,12 @@ export async function updateMyProfile(changes) {
   return supabase.from("profiles").update(changes).eq("id", user.id);
 }
 
+export async function getMyProfile() {
+  const user = await requireUser();
+  if (!user) return { data: null, error: new Error("Please sign in first") };
+  return supabase.from("profiles").select("username, selected_character").eq("id", user.id).single();
+}
+
 export async function getMyMissionProgress() {
   const user = await requireUser();
   if (!user) return { data: null, error: new Error("Please sign in first") };

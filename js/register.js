@@ -14,6 +14,7 @@ form.addEventListener("submit", async (e) => {
   const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+  localStorage.setItem("fitzUsername", username);
 
   try {
     // สมัครสมาชิกผ่าน Supabase
@@ -30,6 +31,7 @@ form.addEventListener("submit", async (e) => {
 
     // ตรวจสอบ Error
     if (error) {
+      localStorage.removeItem("fitzUsername");
       throw error;
     }
 

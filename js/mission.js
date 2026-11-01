@@ -1,3 +1,26 @@
+import { getMyProfile, requireUser } from "./auth.js";
+
+const user = await requireUser();
+const { data: profile } = user ? await getMyProfile() : { data: null };
+const avatar = document.querySelector(".avatar");
+const username = document.querySelector(".who b");
+const characterImage = {
+  Tomato: "media/img/tomato.png", Cheese: "media/img/cheese.png",
+  Vegetable: "media/img/vegetable.png", Watermelon: "media/img/watermelon.png",
+  Blue: "media/img/blue.png", Avocado: "media/img/avocado.png", Banana: "media/img/banana.png",
+};
+if (username) username.textContent = profile?.username || user?.user_metadata?.username || localStorage.getItem("fitzUsername") || "";
+if (avatar) {
+  const selectedCharacter = profile?.selected_character || localStorage.getItem("fitzCharacter");
+  if (characterImage[selectedCharacter]) {
+    const image = document.createElement("img");
+    image.src = characterImage[selectedCharacter];
+    image.alt = selectedCharacter;
+    image.style.cssText = "width:100%;height:100%;object-fit:contain;border-radius:50%";
+    avatar.replaceChildren(image);
+  }
+}
+
 const M=[
 ["TU Native","เดินออกกำลังกายอย่างน้อย 20 นาที","👣"],["Morning Stretch","ยืดเหยียดร่างกายอย่างน้อย 10 นาที","🧘"],
 ["Team Player","เล่นกีฬาอะไรก็ได้กับเพื่อน อย่างน้อย 30 นาที","⚽"],["Stair Master","เดินขึ้นบันไดแทนลิฟต์ อย่างน้อย 5 ชั้น","🪜"],
