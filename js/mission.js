@@ -1,9 +1,25 @@
-import { getMyProfile, requireUser } from "./auth.js";
+import { getMyProfile, requireUser, signOut } from "./auth.js";
 
 const user = await requireUser();
 const { data: profile } = user ? await getMyProfile() : { data: null };
 const avatar = document.querySelector(".avatar");
 const username = document.querySelector(".who b");
+const settingsBg = document.getElementById("settingsBg");
+document.querySelector(".gear").addEventListener("click", () => {
+  settingsBg.classList.add("show");
+  settingsBg.setAttribute("aria-hidden", "false");
+});
+document.getElementById("closeSettings").addEventListener("click", () => {
+  settingsBg.classList.remove("show");
+  settingsBg.setAttribute("aria-hidden", "true");
+});
+settingsBg.addEventListener("click", (event) => {
+  if (event.target === settingsBg) {
+    settingsBg.classList.remove("show");
+    settingsBg.setAttribute("aria-hidden", "true");
+  }
+});
+document.getElementById("logout").addEventListener("click", signOut);
 const characterImage = {
   Tomato: "media/img/tomato.png", Cheese: "media/img/cheese.png",
   Vegetable: "media/img/vegetable.png", Watermelon: "media/img/watermelon.png",
