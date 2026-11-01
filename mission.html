@@ -94,6 +94,15 @@ nav button.on{background:var(--dark)}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+ 
+  <!-- 2) ตั้งค่า Supabase: แก้ 2 บรรทัดนี้เป็นค่าของโปรเจกต์คุณ -->
+  <script>
+    const SUPABASE_URL = 'https://ztkoqqshhperudnhkskq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_xKI3OmMmN9L4_UGjYJ8V-w_Qv7UUu-a';    // <-- ใส่ sb_publishable_...
+    window.sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
 <script type="module" src="js/mission.js"></script>
 </body>
 </html>
