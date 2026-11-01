@@ -1,4 +1,5 @@
 import { getMyProfile, requireUser, signOut } from "./auth.js";
+import * as auth from "./auth.js";
 
 const user = await requireUser();
 const { data: profile } = user ? await getMyProfile() : { data: null };
@@ -37,6 +38,11 @@ if (avatar) {
   }
 }
 
+/* ---------- Supabase ----------
+   ใช้ client ตัวเดียวกับ auth.js ถ้ามีการ export ไว้ (supabase / sb / client)
+   ถ้าไม่มี ใช้ window.sb ที่สร้างไว้ใน mission.html */
+const sb = auth.supabase || auth.sb || auth.client || auth.supabaseClient || window.sb;
+
 const M=[
 ["TU Native","เดินออกกำลังกายอย่างน้อย 20 นาที","👣"],["Morning Stretch","ยืดเหยียดร่างกายอย่างน้อย 10 นาที","🧘"],
 ["Team Player","เล่นกีฬาอะไรก็ได้กับเพื่อน อย่างน้อย 30 นาที","⚽"],["Stair Master","เดินขึ้นบันไดแทนลิฟต์ อย่างน้อย 5 ชั้น","🪜"],
@@ -54,11 +60,11 @@ const M=[
 ["Volleyball","เล่นวอลเลย์บอลอย่างน้อย 30 นาที","🏐"],["Run 5K","วิ่งให้ครบ 5 กิโลเมตร","🏆"],
 ["Active Friends","ชวนเพื่อนออกกำลังกายด้วยกัน 45 นาที","🤝"],["Champion","ออกกำลังกายต่อเนื่องอย่างน้อย 60 นาที","👑"]];
 const N=M.length;
-let cur=1,sel=0,fileUrl=null;
+let cur=1,sel=0,fileUrl=null,selectedFile=null;
 try{cur=Math.min(N,parseInt(localStorage.getItem('fitzCur'))||1)}catch(e){}
 const $=id=>document.getElementById(id);
 $('pattern').textContent=("🥑🍌🍅🍉🥦🍕⭐").repeat(400);
-function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',1800)}
+function toast(t,ms=1800){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',ms)}
 function pos(i,W){const j=[0,.01,.02,-.01,.015][i%5];return{x:W*(i%2===0?.24+j:.73+j),y:110+i*118}}
 function draw(){
   const map=$('map'),W=map.clientWidth,H=110+N*118+40;
@@ -85,7 +91,7 @@ function openCard(n){
 }
 $('modalBg').onclick=e=>{if(e.target.id==='modalBg')$('modalBg').classList.remove('show')};
 function resetUp(){
-  fileUrl&&URL.revokeObjectURL(fileUrl);fileUrl=null;$('file').value='';
+  fileUrl&&URL.revokeObjectURL(fileUrl);fileUrl=null;selectedFile=null;$('file').value='';
   $('drop').innerHTML='<div class="plus">+</div><div>เพิ่มรูปภาพ/คลิปวิดิโอ</div>';
   $('send').disabled=true;$('send').textContent='ส่งหลักฐานเพื่อตรวจสอบ';
 }
@@ -98,17 +104,65 @@ $('back').onclick=()=>$('up').classList.remove('show');
 $('drop').onclick=()=>$('file').click();
 $('file').onchange=e=>{
   const f=e.target.files[0];if(!f)return;
+  if(f.size>50*1024*1024){toast('❌ ไฟล์ใหญ่เกิน 50MB',3000);$('file').value='';return}
+  selectedFile=f;
   fileUrl&&URL.revokeObjectURL(fileUrl);fileUrl=URL.createObjectURL(f);
   $('drop').innerHTML=f.type.startsWith('video')?`<video src="${fileUrl}" controls playsinline></video>`:`<img src="${fileUrl}" alt="หลักฐาน">`;
   $('send').disabled=false;
 };
-$('send').onclick=()=>{
+
+/* ---------- ส่งหลักฐานจริงไป Supabase ---------- */
+$('send').onclick=async()=>{
+  if(!sb){toast('❌ ไม่พบการเชื่อมต่อ Supabase',3500);return}
+  if(!selectedFile){toast('กรุณาเลือกไฟล์ก่อน');return}
   $('send').disabled=true;$('send').textContent='กำลังส่ง...';
-  setTimeout(()=>{
-    if(sel===cur&&cur<N){cur++;try{localStorage.setItem('fitzCur',cur)}catch(e){}}
+  try{
+    const uid=user?.id||(await sb.auth.getUser()).data?.user?.id;
+    if(!uid)throw new Error('กรุณาเข้าสู่ระบบก่อน');
+    // 1) อัปโหลดไฟล์ (โฟลเดอร์แรกต้องเป็น user id ตาม policy)
+    const ext=(selectedFile.type.split('/')[1]||'bin').replace('quicktime','mov');
+    const path=`${uid}/level-${sel}-${Date.now()}.${ext}`;
+    const up=await sb.storage.from('mission-evidence').upload(path,selectedFile,{contentType:selectedFile.type});
+    if(up.error)throw up.error;
+    // 2) บันทึกการส่งงาน
+    const sub=await sb.from('mission_submissions').insert({user_id:uid,level:sel,evidence_path:path});
+    if(sub.error)throw sub.error;
+    // 3) ปลดล็อกด่านถัดไป (เฉพาะด่านปัจจุบัน)
+    if(sel===cur){
+      const rpc=await sb.rpc('complete_mission_level',{p_level:sel});
+      if(rpc.error)throw rpc.error;
+      if(cur<N){cur++;try{localStorage.setItem('fitzCur',cur)}catch(e){}}
+    }
     $('up').classList.remove('show');draw();toast('✅ ส่งหลักฐานแล้ว รอการตรวจสอบ');
     const y=pos(Math.min(cur,N)-1,$('map').clientWidth).y;$('scroll').scrollTo({top:y-200,behavior:'smooth'});
-  },900);
+  }catch(err){
+    console.error(err);
+    toast('❌ ส่งไม่สำเร็จ: '+(err.message||'เกิดข้อผิดพลาด'),4000);
+    $('send').disabled=false;$('send').textContent='ส่งหลักฐานเพื่อตรวจสอบ';
+  }
 };
+
+/* ---------- โหลดความคืบหน้าจาก Supabase ---------- */
+async function loadProgress(){
+  if(!sb||!user)return;
+  try{
+    let {data,error}=await sb.from('mission_progress').select('unlocked_level').eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    if(!data){
+      const ins=await sb.from('mission_progress').insert({user_id:user.id,unlocked_level:1,completed_level:0});
+      if(ins.error)console.warn('สร้าง mission_progress ไม่ได้:',ins.error.message);
+      data={unlocked_level:1};
+    }
+    cur=Math.min(N,data.unlocked_level||1);
+    try{localStorage.setItem('fitzCur',cur)}catch(e){}
+    draw();
+    $('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);
+  }catch(err){
+    console.error(err);
+    toast('❌ โหลดความคืบหน้าไม่สำเร็จ: '+(err.message||''),3500);
+  }
+}
+
 addEventListener('resize',draw);draw();
 $('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);
+loadProgress();
