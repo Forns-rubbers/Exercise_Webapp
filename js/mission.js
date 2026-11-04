@@ -44,8 +44,12 @@ if (avatar) {
 const sb = auth.supabase || auth.sb || auth.client || auth.supabaseClient || window.sb;
 const levelStatuses = new Map();
 if (sb && user) sb.rpc('record_user_visit').then(({error}) => { if (error) console.warn(error.message); });
-document.querySelectorAll('nav button')[0].onclick=()=>location.href='ranking.html';
-document.querySelectorAll('nav button')[2].onclick=()=>location.href='ranking.html';
+const navButtons=document.querySelectorAll('nav button');
+navButtons[0].setAttribute('aria-label','คูปอง');
+navButtons[0].textContent='🎟️';
+navButtons[0].onclick=()=>location.href='coupon.html';
+navButtons[2].setAttribute('aria-label','Ranking');
+navButtons[2].onclick=()=>location.href='ranking.html';
 const leaderboardLink=document.createElement('a');
 leaderboardLink.href='ranking.html'; leaderboardLink.textContent='🏆 Ranking';
 leaderboardLink.style.cssText='display:block;text-align:center;padding:12px;margin:10px 0;background:#00d4b1;color:#07213c;border-radius:12px;text-decoration:none;font-weight:bold';
