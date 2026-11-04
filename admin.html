@@ -1,7 +1,128 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin | Fitz</title>
-<link rel="stylesheet" href="css/style.css"><style>
-body{background:#f3f6fb;color:#17233d;font-family:Arial,sans-serif;margin:0}.admin{max-width:1100px;margin:auto;padding:24px}.bar{display:flex;gap:12px;align-items:center;justify-content:space-between}.bar a,.bar button{padding:10px 14px;border:0;border-radius:8px;background:#132b50;color:white;text-decoration:none;cursor:pointer}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:22px 0}.stat,.submission{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 10px #132b5012}.stat strong{display:block;font-size:30px;color:#1176b8}.submission{margin:14px 0}.submission img,.submission video{display:block;max-width:min(100%,520px);max-height:420px;margin:12px 0;border-radius:8px}.actions{display:flex;gap:10px}.actions button{padding:9px 15px;border:0;border-radius:7px;color:#fff;cursor:pointer}.accept{background:#198754}.deny{background:#c62828}.muted{color:#65728a}.status{font-weight:bold}.error{color:#b00020}
-</style></head><body><main class="admin"><header class="bar"><h1>Admin dashboard</h1><div><a href="ranking.html">Ranking</a> <button id="logout">Log out</button></div></header>
-<p id="message" class="muted">Loading dashboard…</p><section class="stats"><article class="stat">App visits<strong id="visits">—</strong></article><article class="stat">Returning users<strong id="returning">—</strong></article><article class="stat">Registered users<strong id="users">—</strong></article></section>
-<h2>Mission submissions</h2><div id="submissions"></div></main><script type="module" src="js/admin.js"></script></body></html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin | Fitz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: #f3f6fb;
+            color: #17233d;
+            font-family: Arial, sans-serif;
+            margin: 0
+        }
+
+        .admin {
+            max-width: 1100px;
+            margin: auto;
+            padding: 24px
+        }
+
+        .bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .bar a,
+        .bar button {
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #132b50;
+            color: white;
+            text-decoration: none;
+            cursor: pointer
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px;
+            margin: 22px 0
+        }
+
+        .stat,
+        .submission {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px #132b5012
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 30px;
+            color: #1176b8
+        }
+
+        .submission {
+            margin: 14px 0
+        }
+
+        .submission img,
+        .submission video {
+            display: block;
+            max-width: min(100%, 520px);
+            max-height: 420px;
+            margin: 12px 0;
+            border-radius: 8px
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px
+        }
+
+        .actions button {
+            padding: 9px 15px;
+            border: 0;
+            border-radius: 7px;
+            color: #fff;
+            cursor: pointer
+        }
+
+        .accept {
+            background: #198754
+        }
+
+        .deny {
+            background: #c62828
+        }
+
+        .muted {
+            color: #65728a
+        }
+
+        .status {
+            font-weight: bold
+        }
+
+        .error {
+            color: #b00020
+        }
+    </style>
+</head>
+
+<body>
+    <main class="admin">
+        <header class="bar">
+            <h1>Admin dashboard</h1>
+            <div><a href="ranking.html">Ranking</a> <button id="logout">Log out</button></div>
+        </header>
+        <p id="message" class="muted">Loading dashboard…</p>
+        <section class="stats">
+            <article class="stat">App visits<strong id="visits">—</strong></article>
+            <article class="stat">Returning users<strong id="returning">—</strong></article>
+            <article class="stat">Registered users<strong id="users">—</strong></article>
+        </section>
+        <h2>Mission submissions</h2>
+        <div id="submissions"></div>
+    </main>
+    <script type="module" src="js/admin.js"></script>
+</body>
+
+</html>
