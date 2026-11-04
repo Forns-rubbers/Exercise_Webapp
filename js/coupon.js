@@ -87,3 +87,5 @@ redeemButton.addEventListener("click", () => {
 });
 
 renderCoupons();
+
+

@@ -196,3 +196,9 @@ setInterval(refreshStatuses,20000);
 addEventListener('resize',draw);draw();
 $('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);
 loadProgress();
+
+
+function nextP(){
+  const nextpage = document.getElementById('coupon')
+  window.location.href = "coupon.html";
+}
