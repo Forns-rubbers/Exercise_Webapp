@@ -42,6 +42,18 @@ if (avatar) {
    ใช้ client ตัวเดียวกับ auth.js ถ้ามีการ export ไว้ (supabase / sb / client)
    ถ้าไม่มี ใช้ window.sb ที่สร้างไว้ใน mission.html */
 const sb = auth.supabase || auth.sb || auth.client || auth.supabaseClient || window.sb;
+const levelStatuses = new Map();
+if (sb && user) sb.rpc('record_user_visit').then(({error}) => { if (error) console.warn(error.message); });
+document.querySelectorAll('nav button')[0].onclick=()=>location.href='ranking.html';
+document.querySelectorAll('nav button')[2].onclick=()=>location.href='ranking.html';
+const leaderboardLink=document.createElement('a');
+leaderboardLink.href='ranking.html'; leaderboardLink.textContent='🏆 Ranking';
+leaderboardLink.style.cssText='display:block;text-align:center;padding:12px;margin:10px 0;background:#00d4b1;color:#07213c;border-radius:12px;text-decoration:none;font-weight:bold';
+document.querySelector('#settingsSidebar').append(leaderboardLink);
+if(user){
+  const {data:roleData}=await sb.from('profiles').select('role').eq('id',user.id).maybeSingle();
+  if(roleData?.role==='admin'){const link=document.createElement('a');link.href='admin.html';link.textContent='Admin dashboard';link.style.cssText=leaderboardLink.style.cssText;document.querySelector('#settingsSidebar').append(link);}
+}
 
 const M=[
 ["TU Native","เดินออกกำลังกายอย่างน้อย 20 นาที","👣"],["Morning Stretch","ยืดเหยียดร่างกายอย่างน้อย 10 นาที","🧘"],
@@ -77,7 +89,11 @@ function draw(){
   map.querySelectorAll('.node').forEach(n=>n.remove());
   for(let i=0;i<N;i++){const p=pos(i,W),n=i+1,b=document.createElement('button');
     b.className='node'+(n<=cur?' cur':'')+(n>cur?' lock':'');
-    if(n<cur){b.classList.remove('cur');b.style.cssText+=';border-color:#13a557;background:radial-gradient(circle at 35% 30%,#7dffb0,#21e87c);color:#0e9f4f'}
+    const status=levelStatuses.get(n)||'pending';
+    b.classList.remove('cur','lock'); b.title=`Level ${n}: ${status}`;
+    if(status==='rejected')b.style.cssText+=';border-color:#c62828;background:#ef5350;color:#fff';
+    else if(status==='pending')b.style.cssText+=';border-color:#168bd2;background:#42b9f5;color:#fff';
+    else if(status==='approved')b.style.cssText+=';border-color:#13a557;background:#21e87c;color:#0e9f4f';
     b.style.left=p.x+'px';b.style.top=p.y+'px';b.textContent=n;
     b.onclick=()=>openCard(n);$('map').appendChild(b)}
 }
@@ -125,14 +141,11 @@ $('send').onclick=async()=>{
     const up=await sb.storage.from('mission-evidence').upload(path,selectedFile,{contentType:selectedFile.type});
     if(up.error)throw up.error;
     // 2) บันทึกการส่งงาน
-    const sub=await sb.from('mission_submissions').insert({user_id:uid,level:sel,evidence_path:path});
+    const sub=await sb.from('mission_submissions').insert({user_id:uid,level:sel,evidence_path:path,status:'pending'});
     if(sub.error)throw sub.error;
     // 3) ปลดล็อกด่านถัดไป (เฉพาะด่านปัจจุบัน)
-    if(sel===cur){
-      const rpc=await sb.rpc('complete_mission_level',{p_level:sel});
-      if(rpc.error)throw rpc.error;
-      if(cur<N){cur++;try{localStorage.setItem('fitzCur',cur)}catch(e){}}
-    }
+    levelStatuses.set(sel,'pending');
+    $('up').classList.remove('show');draw();toast('Evidence submitted for review');
     $('up').classList.remove('show');draw();toast('✅ ส่งหลักฐานแล้ว รอการตรวจสอบ');
     const y=pos(Math.min(cur,N)-1,$('map').clientWidth).y;$('scroll').scrollTo({top:y-200,behavior:'smooth'});
   }catch(err){
@@ -154,6 +167,10 @@ async function loadProgress(){
       data={unlocked_level:1};
     }
     cur=Math.min(N,data.unlocked_level||1);
+    const {data:submissions,error:submissionError}=await sb.from('mission_submissions').select('level,status').eq('user_id',user.id).order('created_at',{ascending:false});
+    if(submissionError)throw submissionError;
+    levelStatuses.clear();
+    for(const row of submissions||[])if(!levelStatuses.has(row.level))levelStatuses.set(row.level,row.status);
     try{localStorage.setItem('fitzCur',cur)}catch(e){}
     draw();
     $('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);
@@ -162,6 +179,15 @@ async function loadProgress(){
     toast('❌ โหลดความคืบหน้าไม่สำเร็จ: '+(err.message||''),3500);
   }
 }
+async function refreshStatuses(){
+  if(!sb||!user)return;
+  const {data,error}=await sb.from('mission_submissions').select('level,status').eq('user_id',user.id).order('created_at',{ascending:false});
+  if(error)return;
+  levelStatuses.clear();
+  for(const row of data||[])if(!levelStatuses.has(row.level))levelStatuses.set(row.level,row.status);
+  draw();
+}
+setInterval(refreshStatuses,20000);
 
 addEventListener('resize',draw);draw();
 $('scroll').scrollTop=Math.max(0,pos(cur-1,$('map').clientWidth).y-250);

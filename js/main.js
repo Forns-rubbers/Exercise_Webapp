@@ -7,7 +7,8 @@ const { data: { user } } = await supabase.auth.getUser();
 if (user) window.location.replace(await nextPage(user.id));
 
 async function nextPage(userId) {
-  const { data } = await supabase.from("profiles").select("weekly_goal_days").eq("id", userId).maybeSingle();
+  const { data } = await supabase.from("profiles").select("weekly_goal_days,role").eq("id", userId).maybeSingle();
+  if (data?.role === "admin") return "admin.html";
   return data?.weekly_goal_days ? "mission.html" : "charactor.html";
 }
 
