@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.js";
-
+const detailImage = document.querySelector("#detailImage");
 const {
   data: { user },
 } = await supabase.auth.getUser();
@@ -10,13 +10,13 @@ const coupons = [
     id: "gingkaew-10",
     name: "กิ่งแก้ว",
     description: "คูปองส่วนลด 10 %",
-    Image: "../media/img/kingkaew.jpg",
+    image: "../media/img/kingkaew.jpg",
   },
   {
     id: "hiwsahaay",
     name: "หิวสหาย",
     description: "คูปองส่วนลด 10 %",
-    Image: "../media/img/hiwsahaay.jpg",
+    image: "../media/img/hiwsahaay.jpg",
   },
 ];
 const list = document.querySelector("#couponList");
@@ -85,6 +85,8 @@ function openCoupon(coupon) {
   redeemButton.textContent = used ? "ใช้คูปองแล้ว" : "แลกคูปอง";
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
+  detailImage.src = coupon.image;
+  detailImage.alt = `ร้าน${coupon.name}`;
   document.querySelector("#closeCoupon").focus();
 }
 

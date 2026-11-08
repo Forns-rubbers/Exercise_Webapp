@@ -118,9 +118,14 @@ body {
 
 .coupon-avatar,
 .detail-image {
-    flex: 0 0 auto;
+    display: block;
+    width: 148px;
+    height: 148px;
+    margin: 0 auto 18px;
+    object-fit: contain;
     border-radius: 50%;
-    background: var(--gray)
+    background: white;
+    padding: 8px;
 }
 
 .coupon-avatar {
