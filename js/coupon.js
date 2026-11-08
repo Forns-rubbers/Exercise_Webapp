@@ -15,7 +15,7 @@ const coupons = [
   {
     id: "hiwsahaay",
     name: "หิวสหาย",
-    description: "รายละเอียด",
+    description: "คูปองส่วนลด 10 %",
     Image: "../media/img/hiwsahaay.jpg",
   },
 ];
