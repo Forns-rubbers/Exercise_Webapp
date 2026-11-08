@@ -1,14 +1,23 @@
 import { supabase } from "./supabase.js";
 
-const { data: { user } } = await supabase.auth.getUser();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 if (!user) location.replace("index.html");
 
 const coupons = [
-  { id: "gingkaew-10", name: "กิ่งแก้ว", description: "คูปองส่วนลด 10 %" },
-  { id: "shop-2", name: "ชื่อร้าน", description: "รายละเอียด" },
-  { id: "shop-3", name: "ชื่อร้าน", description: "รายละเอียด" },
-  { id: "shop-4", name: "ชื่อร้าน", description: "รายละเอียด" },
-  { id: "shop-5", name: "ชื่อร้าน", description: "รายละเอียด" },
+  {
+    id: "gingkaew-10",
+    name: "กิ่งแก้ว",
+    description: "คูปองส่วนลด 10 %",
+    Image: "../media/img/kingkaew.jpg",
+  },
+  {
+    id: "hiwsahaay",
+    name: "หิวสหาย",
+    description: "รายละเอียด",
+    Image: "../media/img/hiwsahaay.jpg",
+  },
 ];
 const list = document.querySelector("#couponList");
 const modal = document.querySelector("#couponModal");
@@ -32,10 +41,19 @@ function renderCoupons() {
     const card = document.createElement("button");
     card.type = "button";
     card.className = `coupon-card${used ? " used" : ""}`;
-    card.setAttribute("aria-label", `${coupon.name}: ${coupon.description}${used ? " - ใช้แล้ว" : ""}`);
-    const imagePlaceholder = document.createElement("span");
+    card.setAttribute(
+      "aria-label",
+      `${coupon.name}: ${coupon.description}${used ? " - ใช้แล้ว" : ""}`,
+    );
+    const imagePlaceholder = document.createElement("img");
+
     imagePlaceholder.className = "coupon-avatar";
-    imagePlaceholder.setAttribute("aria-hidden", "true");
+    imagePlaceholder.src = coupon.image;
+    imagePlaceholder.alt = `ร้าน${coupon.name}`;
+
+    imagePlaceholder.onerror = () => {
+      imagePlaceholder.style.display = "none";
+    };
     const copy = document.createElement("span");
     copy.className = "coupon-copy";
     const name = document.createElement("span");
@@ -78,7 +96,11 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
 });
 redeemButton.addEventListener("click", () => {
-  if (!activeCoupon || localStorage.getItem(storageKey(activeCoupon)) === "true") return;
+  if (
+    !activeCoupon ||
+    localStorage.getItem(storageKey(activeCoupon)) === "true"
+  )
+    return;
   localStorage.setItem(storageKey(activeCoupon), "true");
   redeemButton.disabled = true;
   redeemButton.textContent = "ใช้คูปองแล้ว";
@@ -87,5 +109,3 @@ redeemButton.addEventListener("click", () => {
 });
 
 renderCoupons();
-
-

@@ -1,25 +1,350 @@
-:root{--yellow:#f3df00;--yellow-deep:#e7d100;--navy:#0b1a3a;--cream:#fff;--gray:#cbd3dc;--ink:#090909;--footer:#858000}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;font-family:'Mali','Noto Sans Thai',sans-serif;background:#171717;color:var(--ink)}
-body{min-height:100svh}
-.coupon-app{position:relative;max-width:520px;min-height:100svh;margin:auto;padding:0 0 calc(82px + env(safe-area-inset-bottom,0px));background:var(--yellow);overflow:hidden}
-.coupon-heading{height:150px;padding:25px 22px 4px;display:flex;align-items:center;justify-content:space-between}
-.coupon-heading h1{margin:0;font:400 clamp(44px,12vw,68px)/1 'Chewy',cursive;letter-spacing:2px;color:#050505;text-align:center;transform:rotate(-2deg)}
-.back-link{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#141414;color:white;text-decoration:none;font-size:25px}.heading-spacer{width:42px}
-.warning{margin:-6px 18px 18px;padding:9px 12px;border:2px solid #f27600;border-radius:12px;background:#fff2a8;color:#7a2800;text-align:center;font-size:12px;line-height:1.45;font-weight:700;box-shadow:0 3px 0 #dca900}
-.coupon-list{display:grid;gap:20px;padding:2px 18px 28px}
-.coupon-card{width:100%;min-height:136px;border:0;border-radius:28px;background:#fff;padding:18px 22px;display:flex;align-items:center;gap:22px;text-align:left;color:var(--ink);cursor:pointer;box-shadow:0 7px 0 #d1bf00;transition:transform .16s,box-shadow .16s}
-.coupon-card:hover{transform:translateY(-2px);box-shadow:0 9px 0 #c6b600}.coupon-card:active{transform:translateY(2px);box-shadow:0 3px 0 #c6b600}
-.coupon-avatar,.detail-image{flex:0 0 auto;border-radius:50%;background:var(--gray)}.coupon-avatar{width:92px;height:92px}
-.coupon-copy{display:grid;gap:2px;min-width:0}.coupon-name{font-size:23px;font-weight:700;line-height:1.35}.coupon-description{font-size:18px;line-height:1.4}
-.coupon-card.used{opacity:.66}.used-tag{display:inline-block;width:max-content;padding:2px 9px;border-radius:999px;background:#1b2020;color:#fff;font-size:12px;font-weight:700}
-.bottom-nav{position:absolute;left:0;right:0;bottom:0;height:calc(72px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);display:grid;grid-template-columns:repeat(3,1fr);background:var(--footer)}
-.bottom-nav button{border:0;background:transparent;color:#fff;font-size:38px;cursor:pointer}.bottom-nav button.selected{background:#1b2020}
-.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modal-shade{position:absolute;inset:0;background:#0008}
-.coupon-detail{position:relative;z-index:1;width:min(100%,420px);padding:42px 28px 30px;border-radius:28px;background:#fff;text-align:center;box-shadow:0 15px 35px #0004;animation:pop .18s ease-out}
-.close-coupon{position:absolute;top:-51px;right:-2px;width:46px;height:46px;border:0;background:none;color:#fff;font:700 54px/42px Arial,sans-serif;cursor:pointer}
-.detail-image{width:148px;height:148px;margin:0 auto 18px}.coupon-detail h2{margin:0;font-size:30px;line-height:1.35}.coupon-detail>p:not(.redeem-message){margin:2px 0 26px;font-size:22px;line-height:1.5}
-.redeem-button{width:100%;min-height:76px;border:0;border-radius:28px;background:#050505;color:#fff;font:700 30px 'Mali',sans-serif;cursor:pointer;transition:transform .16s,background .16s}.redeem-button:hover{transform:translateY(-2px);background:#242424}.redeem-button:disabled{background:#68727d;cursor:default;transform:none}
-.redeem-message{min-height:0;margin:0;color:#275d36;font-weight:700}.redeem-message:not(:empty){margin-top:12px}
-@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:380px){.coupon-heading{height:128px}.coupon-card{min-height:118px;padding:14px;gap:15px;border-radius:22px}.coupon-avatar{width:78px;height:78px}.coupon-name{font-size:20px}.coupon-description{font-size:16px}.coupon-detail{padding:36px 22px 24px}.detail-image{width:128px;height:128px}.coupon-detail h2{font-size:26px}.coupon-detail>p:not(.redeem-message){font-size:19px}.redeem-button{min-height:66px;font-size:26px}}
+:root {
+    --yellow: #f3df00;
+    --yellow-deep: #e7d100;
+    --navy: #0b1a3a;
+    --cream: #fff;
+    --gray: #cbd3dc;
+    --ink: #090909;
+    --footer: #858000
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: 'Mali', 'Noto Sans Thai', sans-serif;
+    background: #171717;
+    color: var(--ink)
+}
+
+body {
+    min-height: 100svh
+}
+
+.coupon-app {
+    position: relative;
+    max-width: 520px;
+    min-height: 100svh;
+    margin: auto;
+    padding: 0 0 calc(82px + env(safe-area-inset-bottom, 0px));
+    background: var(--yellow);
+    overflow: hidden
+}
+
+.coupon-heading {
+    height: 150px;
+    padding: 25px 22px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.coupon-heading h1 {
+    margin: 0;
+    font: 400 clamp(44px, 12vw, 68px)/1 'Chewy', cursive;
+    letter-spacing: 2px;
+    color: #050505;
+    text-align: center;
+    transform: rotate(-2deg)
+}
+
+.back-link {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #141414;
+    color: white;
+    text-decoration: none;
+    font-size: 25px
+}
+
+.heading-spacer {
+    width: 42px
+}
+
+.warning {
+    margin: -6px 18px 18px;
+    padding: 9px 12px;
+    border: 2px solid #f27600;
+    border-radius: 12px;
+    background: #fff2a8;
+    color: #7a2800;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 700;
+    box-shadow: 0 3px 0 #dca900
+}
+
+.coupon-list {
+    display: grid;
+    gap: 20px;
+    padding: 2px 18px 28px
+}
+
+.coupon-card {
+    width: 100%;
+    min-height: 136px;
+    border: 0;
+    border-radius: 28px;
+    background: #fff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 7px 0 #d1bf00;
+    transition: transform .16s, box-shadow .16s
+}
+
+.coupon-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 0 #c6b600
+}
+
+.coupon-card:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #c6b600
+}
+
+.coupon-avatar,
+.detail-image {
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--gray)
+}
+
+.coupon-avatar {
+    width: 92px;
+    height: 92px
+}
+
+.coupon-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0
+}
+
+.coupon-name {
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.35
+}
+
+.coupon-description {
+    font-size: 18px;
+    line-height: 1.4
+}
+
+.coupon-card.used {
+    opacity: .66
+}
+
+.used-tag {
+    display: inline-block;
+    width: max-content;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #1b2020;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700
+}
+
+.bottom-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(72px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--footer)
+}
+
+.bottom-nav button {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 38px;
+    cursor: pointer
+}
+
+.bottom-nav button.selected {
+    background: #1b2020
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px
+}
+
+.modal.open {
+    display: flex
+}
+
+.modal-shade {
+    position: absolute;
+    inset: 0;
+    background: #0008
+}
+
+.coupon-detail {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 420px);
+    padding: 42px 28px 30px;
+    border-radius: 28px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 15px 35px #0004;
+    animation: pop .18s ease-out
+}
+
+.close-coupon {
+    position: absolute;
+    top: -51px;
+    right: -2px;
+    width: 46px;
+    height: 46px;
+    border: 0;
+    background: none;
+    color: #fff;
+    font: 700 54px/42px Arial, sans-serif;
+    cursor: pointer
+}
+
+.detail-image {
+    width: 148px;
+    height: 148px;
+    margin: 0 auto 18px
+}
+
+.coupon-detail h2 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.35
+}
+
+.coupon-detail>p:not(.redeem-message) {
+    margin: 2px 0 26px;
+    font-size: 22px;
+    line-height: 1.5
+}
+
+.redeem-button {
+    width: 100%;
+    min-height: 76px;
+    border: 0;
+    border-radius: 28px;
+    background: #050505;
+    color: #fff;
+    font: 700 30px 'Mali', sans-serif;
+    cursor: pointer;
+    transition: transform .16s, background .16s
+}
+
+.redeem-button:hover {
+    transform: translateY(-2px);
+    background: #242424
+}
+
+.redeem-button:disabled {
+    background: #68727d;
+    cursor: default;
+    transform: none
+}
+
+.redeem-message {
+    min-height: 0;
+    margin: 0;
+    color: #275d36;
+    font-weight: 700
+}
+
+.redeem-message:not(:empty) {
+    margin-top: 12px
+}
+
+@keyframes pop {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.97)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+@media(max-width:380px) {
+    .coupon-heading {
+        height: 128px
+    }
+
+    .coupon-card {
+        min-height: 118px;
+        padding: 14px;
+        gap: 15px;
+        border-radius: 22px
+    }
+
+    .coupon-avatar {
+        width: 78px;
+        height: 78px
+    }
+
+    .coupon-name {
+        font-size: 20px
+    }
+
+    .coupon-description {
+        font-size: 16px
+    }
+
+    .coupon-detail {
+        padding: 36px 22px 24px
+    }
+
+    .detail-image {
+        width: 128px;
+        height: 128px
+    }
+
+    .coupon-detail h2 {
+        font-size: 26px
+    }
+
+    .coupon-detail>p:not(.redeem-message) {
+        font-size: 19px
+    }
+
+    .redeem-button {
+        min-height: 66px;
+        font-size: 26px
+    }
+}.coupon-avatar {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: white;
+    padding: 5px;
+    flex-shrink: 0;
+}
